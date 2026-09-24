@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMNIS OS V11</title>
+
+<style>
+:root {
+    --accent: #00e5ff;
+    --glass: 0.78;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #03070d;
+    color: #e9fcff;
+    overflow: hidden;
+}
+
+/* ================= BOOT ================= */
+
+#boot {
+    position: fixed;
+    inset: 0;
+    background: #020409;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.bootLogo {
+    font-size: 55px;
+    font-weight: 900;
+    letter-spacing: 10px;
+    color: var(--accent);
+    text-shadow: 0 0 30px var(--accent);
+}
+
+.bootText {
+    margin-top: 12px;
+    color: #78939b;
+}
+
+.bootBar {
+    width: 320px;
+    height: 5px;
+    background: #14232b;
+    border-radius: 10px;
+    margin-top: 25px;
+    overflow: hidden;
+}
+
+.bootBar div {
+    width: 0%;
+    height: 100%;
+    background: var(--accent);
+    animation: bootLoad 2s forwards;
+}
+
+@keyframes bootLoad {
+    to {
+        width: 100%;
+    }
+}
+
+/* ================= DESKTOP ================= */
+
+#desktop {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+
+    background:
+        radial-gradient(circle at 20% 20%, #123447 0%, transparent 32%),
+        radial-gradient(circle at 80% 80%, #09202b 0%, transparent 30%),
+        linear-gradient(135deg, #030811, #07131e, #02050b);
+}
+
+/* ================= TOP BAR ================= */
+
+#topbar {
+    height: 43px;
+    background: rgba(3, 9, 16, 0.88);
+    backdrop-filter: blur(18px);
+
+    border-bottom: 1px solid #183541;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 15px;
+
+    position: relative;
+    z-index: 100;
+}
+
+.logoSmall {
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--accent);
+}
+
+.version {
+    font-size: 10px;
+    color: #6d858c;
+    margin-left: 5px;
+}
+
+#clock {
+    font-size: 13px;
+    color: #c9f9ff;
+}
+
+/* ================= DESKTOP ICONS ================= */
+
+.desktopIcons {
+    position: absolute;
+    top: 65px;
+    left: 22px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.desktopIcon {
+    width: 80px;
+    padding: 9px;
+
+    text-align: center;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.desktopIcon:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.desktopIcon .emoji {
+    font-size: 34px;
+}
+
+.desktopIcon span {
+    display: block;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* ================= TASKBAR ================= */
+
+#taskbar {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 57px;
+
+    background: rgba(3, 7, 13, 0.92);
+    backdrop-filter: blur(20px);
+
+    border-top: 1px solid #183640;
+
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px;
+
+    z-index: 500;
+}
+
+button {
+    background: #081720;
+    color: #ddfbff;
+
+    border: 1px solid #21424e;
+
+    border-radius: 7px;
+
+    padding: 8px 12px;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+}
+
+button:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0,229,255,0.18);
+}
+
+/* ================= WINDOWS ================= */
+
+.window {
+    position: absolute;
+
+    left: 170px;
+    top: 90px;
+
+    width: 720px;
+    height: 510px;
+
+    background: rgba(5, 13, 21, var(--glass));
+
+    border: 1px solid #28515d;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,0.65),
+        inset 0 0 25px rgba(0,229,255,0.02);
+
+    backdrop-filter: blur(22px);
+
+    overflow: hidden;
+
+    display: none;
+}
+
+.titlebar {
+    height: 43px;
+
+    background: #07151f;
+
+    border-bottom: 1px solid #1a3944;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 10px;
+
+    cursor: move;
+}
+
+.titlebar strong {
+    flex: 1;
+}
+
+.windowButtons button {
+    padding: 3px 9px;
+    margin-left: 4px;
+}
+
+.windowContent {
+    height: calc(100% - 43px);
+
+    padding: 13px;
+
+    overflow: auto;
+}
+
+/* ================= FILES ================= */
+
+.fileToolbar {
+    display: flex;
+    gap: 7px;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 12px;
+}
+
+.path {
+    flex: 1;
+
+    min-width: 160px;
+
+    padding: 8px;
+
+    color: #70dbe8;
+
+    font-size: 13px;
+
+    background: rgba(0,0,0,0.15);
+
+    border-radius: 6px;
+}
+
+input,
+textarea {
+    background: #061018;
+
+    color: #eaffff;
+
+    border: 1px solid #23434e;
+
+    border-radius: 7px;
+
+    padding: 9px;
+
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--accent);
+
+    box-shadow: 0 0 10px rgba(0,229,255,0.08);
+}
+
+.search {
+    width: 150px;
+}
+
+.fileGrid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(125px, 1fr));
+
+    gap: 9px;
+}
+
+.fileItem {
+    min-height: 105px;
+
+    padding: 12px 8px;
+
+    border: 1px solid #183640;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    transition: 0.15s;
+
+    user-select: none;
+}
+
+.fileItem:hover {
+    background: rgba(255,255,255,0.045);
+
+    border-color: #347583;
+}
+
+.fileIcon {
+    font-size: 32px;
+
+    margin-bottom: 7px;
+}
+
+.fileName {
+    font-size: 13px;
+
+    word-break: break-word;
+}
+
+.fileType {
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 10px;
+
+    color: #75939b;
+}
+
+.fileStatus {
+    margin-top: 12px;
+
+    font-size: 12px;
+
+    color: #76959d;
+}
+
+/* ================= EDITOR ================= */
+
+#editorText {
+    width: 100%;
+
+    height: 350px;
+
+    resize: none;
+
+    font-family: Consolas, monospace;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+/* ================= TERMINAL ================= */
+
+#terminalOutput {
+    height: 360px;
+
+    overflow: auto;
+
+    background: #02070b;
+
+    border: 1px solid #15323c;
+
+    border-radius: 8px;
+
+    padding: 12px;
+
+    font-family: Consolas, monospace;
+
+    font-size: 13px;
+
+    white-space: pre-wrap;
+
+    color: #a8f8ff;
+}
+
+#terminalInput {
+    width: 100%;
+
+    margin-top: 9px;
+
+    font-family: Consolas, monospace;
+}
+
+/* ================= CALCULATOR ================= */
+
+.calcDisplay {
+    width: 100%;
+
+    font-size: 24px;
+
+    margin-bottom: 12px;
+}
+
+.calcResult {
+    margin-top: 15px;
+
+    font-size: 20px;
+
+    color: var(--accent);
+}
+
+/* ================= NOTES ================= */
+
+.note {
+    padding: 12px;
+
+    border: 1px solid #1b3a45;
+
+    border-radius: 8px;
+
+    margin-bottom: 8px;
+
+    cursor: pointer;
+}
+
+.note:hover {
+    border-color: #3c7784;
+}
+
+.note small {
+    color: #78959d;
+}
+
+/* ================= UTILITY ================= */
+
+.hidden {
+    display: none !important;
+}
+
+.status {
+    color: #76949c;
+
+    font-size: 12px;
+
+    margin-top: 10px;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+@media(max-width:800px) {
+
+    .window {
+        left: 10px;
+        top: 60px;
+
+        width: calc(100vw - 20px);
+        height: calc(100vh - 130px);
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= BOOT ================= -->
+
+<div id="boot">
+
+    <div class="bootLogo">
+        OMNIS
+    </div>
+
+    <div class="bootText">
+        Initializing OMNIS OS V11...
+    </div>
+
+    <div class="bootBar">
+        <div></div>
+    </div>
+
+</div>
+
+
+<!-- ================= DESKTOP ================= -->
+
+<div id="desktop">
+
+
+    <!-- TOP BAR -->
+
+    <div id="topbar">
+
+        <div>
+            <span class="logoSmall">
+                OMNIS
+            </span>
+
+            <span class="version">
+                OS V11
+            </span>
+        </div>
+
+        <div id="clock"></div>
+
+    </div>
+
+
+    <!-- DESKTOP ICONS -->
+
+    <div class="desktopIcons">
+
+        <div
+            class="desktopIcon"
+            onclick="openApp('filesWindow')"
+        >
+            <div class="emoji">📁</div>
+            <span>Files</span>
+        </div>
+
+
+        <div
+            class="desktopIcon"
+            onclick="openApp('terminalWindow')"
+        >
+            <div class="emoji">⌨️</div>
+            <span>Terminal</span>
+        </div>
+
+
+        <div
+            class="desktopIcon"
+            onclick="openApp('notesWindow')"
+        >
+            <div class="emoji">📝</div>
+            <span>Notes</span>
+        </div>
+
+
+        <div
+            class="desktopIcon"
+            onclick="openApp('calculatorWindow')"
+        >
+            <div class="emoji">🧮</div>
+            <span>Calculator</span>
+        </div>
+
+    </div>
+
+
+    <!-- ================= FILES WINDOW ================= -->
+
+    <div
+        class="window"
+        id="filesWindow"
+    >
+
+        <div
+            class="titlebar"
+            onmousedown="startDrag(event,'filesWindow')"
+        >
+
+            <strong>
+                📁 Files
+            </strong>
+
+            <div class="windowButtons">
+
+                <button onclick="minimizeWindow('filesWindow')">
+                    —
+                </button>
+
+                <button onclick="closeWindow('filesWindow')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="windowContent">
+
+            <div class="fileToolbar">
+
+                <button onclick="goBack()">
+                    ← Back
+                </button>
+
+                <button onclick="goHome()">
+                    🏠 Home
+                </button>
+
+                <div
+                    class="path"
+                    id="currentPath"
+                >
+                    Home
+                </div>
+
+                <input
+                    class="search"
+                    id="fileSearch"
+                    placeholder="Search..."
+                    oninput="renderFiles()"
+                >
+
+                <button onclick="createFile()">
+                    ＋ File
+                </button>
+
+                <button onclick="createFolder()">
+                    ＋ Folder
+                </button>
+
+            </div>
+
+
+            <div
+                class="fileGrid"
+                id="fileGrid"
+            ></div>
+
+
+            <div
+                class="fileStatus"
+                id="fileStatus"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= EDITOR ================= -->
+
+    <div
+        class="window"
+        id="editorWindow"
+    >
+
+        <div
+            class="titlebar"
+            onmousedown="startDrag(event,'editorWindow')"
+        >
+
+            <strong id="editorTitle">
+                📝 Editor
+            </strong>
+
+            <div class="windowButtons">
+
+                <button onclick="saveFile()">
+                    💾 Save
+                </button>
+
+                <button onclick="closeWindow('editorWindow')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="windowContent">
+
+            <textarea
+                id="editorText"
+                spellcheck="false"
+            ></textarea>
+
+            <div class="status">
+                Changes are stored in OMNIS browser storage.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TERMINAL ================= -->
+
+    <div
+        class="window"
+        id="terminalWindow"
+    >
+
+        <div
+            class="titlebar"
+            onmousedown="startDrag(event,'terminalWindow')"
+        >
+
+            <strong>
+                ⌨️ Terminal
+            </strong>
+
+            <div class="windowButtons">
+
+                <button onclick="closeWindow('terminalWindow')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="windowContent">
+
+            <div id="terminalOutput">
+OMNIS Terminal V11
+Type "help" to see available commands.
+
+            </div>
+
+
+            <input
+                id="terminalInput"
+                placeholder="Enter command..."
+                onkeydown="terminalKey(event)"
+            >
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= NOTES ================= -->
+
+    <div
+        class="window"
+        id="notesWindow"
+    >
+
+        <div
+            class="titlebar"
+            onmousedown="startDrag(event,'notesWindow')"
+        >
+
+            <strong>
+                📝 Notes
+            </strong>
+
+            <div class="windowButtons">
+
+                <button onclick="createNote()">
+                    ＋
+                </button>
+
+                <button onclick="closeWindow('notesWindow')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="windowContent">
+
+            <div id="notesList"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CALCULATOR ================= -->
+
+    <div
+        class="window"
+        id="calculatorWindow"
+    >
+
+        <div
+            class="titlebar"
+            onmousedown="startDrag(event,'calculatorWindow')"
+        >
+
+            <strong>
+                🧮 Calculator
+            </strong>
+
+            <div class="windowButtons">
+
+                <button onclick="closeWindow('calculatorWindow')">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="windowContent">
+
+            <input
+                id="calculatorInput"
+                class="calcDisplay"
+                placeholder="Example: 25 * 4 + 10"
+            >
+
+            <button onclick="calculate()">
+                Calculate
+            </button>
+
+            <div
+                class="calcResult"
+                id="calculatorResult"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= TASKBAR ================= -->
+
+    <div id="taskbar">
+
+        <button onclick="openApp('filesWindow')">
+            📁 Files
+        </button>
+
+        <button onclick="openApp('terminalWindow')">
+            ⌨️ Terminal
+        </button>
+
+        <button onclick="openApp('notesWindow')">
+            📝 Notes
+        </button>
+
+        <button onclick="openApp('calculatorWindow')">
+            🧮 Calculator
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   OMNIS FILE SYSTEM
+========================================================= */
+
+const STORAGE_KEY = "OMNIS_OS_V11_FILES";
+
+
+let fileSystem =
+    JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+
+if (!fileSystem) {
+
+    fileSystem = {
+
+        type: "folder",
+
+        name: "Home",
+
+        children: [
+
+            {
+                type: "folder",
+
+                name: "Documents",
+
+                children: [
+
+                    {
+                        type: "file",
+
+                        name: "Welcome.txt",
+
+                        content:
+`Welcome to OMNIS OS V11!
+
+The Files system is now interactive.
+
+Double-click folders to open them.
+Double-click files to edit them.`
+                    },
+
+                    {
+                        type: "file",
+
+                        name: "Readme.txt",
+
+                        content:
+`OMNIS OS V11
+
+Files features:
+
+• Open folders
+• Open files
+• Create files
+• Create folders
+• Edit files
+• Save files
+• Rename files
+• Delete files
+• Search files`
+                    }
+
+                ]
+            },
+
+
+            {
+                type: "folder",
+
+                name: "Projects",
+
+                children: [
+
+                    {
+                        type: "file",
+
+                        name: "omnis.html",
+
+                        content:
+`<!DOCTYPE html>
+
+<html>
+
+<head>
+<title>OMNIS Project</title>
+</head>
+
+<body>
+
+<h1>Hello from OMNIS!</h1>
+
+</body>
+
+</html>`
+                    }
+
+                ]
+            },
+
+
+            {
+                type: "file",
+
+                name: "System.log",
+
+                content:
+`OMNIS OS V11 started successfully.
+Files system initialized.
+Local storage connected.`
+            }
+
+        ]
+
+    };
+
+    saveFileSystem();
+}
+
+
+let currentFolder = fileSystem;
+
+let folderHistory = [];
+
+let currentlyEditing = null;
+
+let zIndex = 20;
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function saveFileSystem() {
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(fileSystem)
+    );
+
+}
+
+
+/* =========================================================
+   FILE ICON
+========================================================= */
+
+function getFileIcon(item) {
+
+    if (item.type === "folder") {
+        return "📁";
+    }
+
+    if (item.name.endsWith(".html")) {
+        return "🌐";
+    }
+
+    if (item.name.endsWith(".js")) {
+        return "⚙️";
+    }
+
+    if (item.name.endsWith(".css")) {
+        return "🎨";
+    }
+
+    if (item.name.endsWith(".txt")) {
+        return "📄";
+    }
+
+    return "📄";
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(text) {
+
+    return text
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   RENDER FILES
+========================================================= */
+
+function renderFiles() {
+
+    const grid =
+        document.getElementById("fileGrid");
+
+    const search =
+        document
+        .getElementById("fileSearch")
+        .value
+        .toLowerCase();
+
+
+    grid.innerHTML = "";
+
+
+    const visibleItems =
+        currentFolder.children.filter(
+            item =>
+                item.name
+                .toLowerCase()
+                .includes(search)
+        );
+
+
+    visibleItems.forEach(item => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "fileItem";
+
+
+        div.innerHTML = `
+
+            <div class="fileIcon">
+                ${getFileIcon(item)}
+            </div>
+
+            <div class="fileName">
+                ${escapeHTML(item.name)}
+            </div>
+
+            <span class="fileType">
+                ${item.type === "folder"
+                    ? "Folder"
+                    : "File"}
+            </span>
+
+        `;
+
+
+        /*
+           SINGLE CLICK
+        */
+
+        div.onclick = function() {
+
+            document
+                .querySelectorAll(".fileItem")
+                .forEach(x =>
+                    x.style.background = ""
+                );
+
+            div.style.background =
+                "rgba(0,229,255,0.08)";
+
+        };
+
+
+        /*
+           DOUBLE CLICK
+        */
+
+        div.ondblclick = function() {
+
+            if (item.type === "folder") {
+
+                folderHistory.push(
+                    currentFolder
+                );
+
+                currentFolder = item;
+
+                renderFiles();
+
+            } else {
+
+                openFile(item);
+
+            }
+
+        };
+
+
+        /*
+           RIGHT CLICK
+        */
+
+        div.oncontextmenu = function(event) {
+
+            event.preventDefault();
+
+            showFileMenu(item);
+
+        };
+
+
+        grid.appendChild(div);
+
+    });
+
+
+    updatePath();
+
+
+    document
+        .getElementById("fileStatus")
+        .textContent =
+        `${currentFolder.children.length} item(s) • Double-click to open • Right-click for actions`;
+
+}
+
+
+/* =========================================================
+   PATH
+========================================================= */
+
+function updatePath() {
+
+    let names = ["Home"];
+
+    folderHistory.forEach(folder => {
+
+        if (folder !== fileSystem) {
+            names.push(folder.name);
+        }
+
+    });
+
+
+    if (
+        currentFolder !== fileSystem &&
+        !names.includes(currentFolder.name)
+    ) {
+
+        names.push(currentFolder.name);
+
+    }
+
+
+    document
+        .getElementById("currentPath")
+        .textContent =
+        names.join(" / ");
+
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+function goBack() {
+
+    if (folderHistory.length === 0) {
+        return;
+    }
+
+
+    currentFolder =
+        folderHistory.pop();
+
+
+    renderFiles();
+
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function goHome() {
+
+    currentFolder = fileSystem;
+
+    folderHistory = [];
+
+    renderFiles();
+
+}
+
+
+/* =========================================================
+   CREATE FILE
+========================================================= */
+
+function createFile() {
+
+    const name =
+        prompt(
+            "Enter file name:",
+            "NewFile.txt"
+        );
+
+
+    if (!name) {
+        return;
+    }
+
+
+    if (
+        currentFolder.children
+            .some(item => item.name === name)
+    ) {
+
+        alert(
+            "A file or folder with that name already exists."
+        );
+
+        return;
+
+    }
+
+
+    currentFolder.children.push({
+
+        type: "file",
+
+        name: name,
+
+        content: ""
+
+    });
+
+
+    saveFileSystem();
+
+    renderFiles();
+
+}
+
+
+/* =========================================================
+   CREATE FOLDER
+========================================================= */
+
+function createFolder() {
+
+    const name =
+        prompt(
+            "Enter folder name:",
+            "New Folder"
+        );
+
+
+    if (!name) {
+        return;
+    }
+
+
+    if (
+        currentFolder.children
+            .some(item => item.name === name)
+    ) {
+
+        alert(
+            "A file or folder with that name already exists."
+        );
+
+        return;
+
+    }
+
+
+    currentFolder.children.push({
+
+        type: "folder",
+
+        name: name,
+
+        children: []
+
+    });
+
+
+    saveFileSystem();
+
+    renderFiles();
+
+}
+
+
+/* =========================================================
+   OPEN FILE
+========================================================= */
+
+function openFile(file) {
+
+    currentlyEditing = file;
+
+
+    document
+        .getElementById("editorTitle")
+        .textContent =
+        "📝 " + file.name;
+
+
+    document
+        .getElementById("editorText")
+        .value =
+        file.content || "";
+
+
+    openApp("editorWindow");
+
+}
+
+
+/* =========================================================
+   SAVE EDITED FILE
+========================================================= */
+
+function saveFile() {
+
+    if (!currentlyEditing) {
+        return;
+    }
+
+
+    currentlyEditing.content =
+        document
+        .getElementById("editorText")
+        .value;
+
+
+    saveFileSystem();
+
+    renderFiles();
+
+
+    alert("File saved successfully.");
+
+}
+
+
+/* =========================================================
+   FILE CONTEXT MENU
+========================================================= */
+
+function showFileMenu(item) {
+
+    let choice =
+        prompt(
+`OMNIS FILE ACTION
+
+${item.name}
+
+Type one:
+
+rename
+delete
+${item.type === "file" ? "edit" : "open"}`,
+            item.type === "file"
+                ? "edit"
+                : "open"
+        );
+
+
+    if (!choice) {
+        return;
+    }
+
+
+    choice =
+        choice.toLowerCase();
+
+
+    if (choice === "rename") {
+
+        renameItem(item);
+
+    }
+
+    else if (choice === "delete") {
+
+        deleteItem(item);
+
+    }
+
+    else if (
+        choice === "edit" &&
+        item.type === "file"
+    ) {
+
+        openFile(item);
+
+    }
+
+    else if (
+        choice === "open" &&
+        item.type === "folder"
+    ) {
+
+        folderHistory.push(
+            currentFolder
+        );
+
+        currentFolder = item;
+
+        renderFiles();
+
+    }
+
+}
+
+
+/* =========================================================
+   RENAME
+========================================================= */
+
+function renameItem(item) {
+
+    const newName =
+        prompt(
+            "Enter new name:",
+            item.name
+        );
+
+
+    if (!newName) {
+        return;
+    }
+
+
+    if (
+        currentFolder.children
+            .some(
+                x =>
+                    x !== item &&
+                    x.name === newName
+            )
+    ) {
+
+        alert(
+            "That name already exists."
+        );
+
+        return;
+
+    }
+
+
+    item.name = newName;
+
+    saveFileSystem();
+
+    renderFiles();
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteItem(item) {
+
+    if (
+        !confirm(
+            `Delete "${item.name}"?`
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    currentFolder.children =
+        currentFolder.children.filter(
+            x => x !== item
+        );
+
+
+    saveFileSystem();
+
+    renderFiles();
+
+}
+
+
+/* =========================================================
+   WINDOWS
+========================================================= */
+
+function openApp(id) {
+
+    const windowElement =
+        document.getElementById(id);
+
+
+    windowElement.style.display =
+        "block";
+
+
+    windowElement.style.zIndex =
+        ++zIndex;
+
+
+    if (id === "filesWindow") {
+        renderFiles();
+    }
+
+
+    if (id === "notesWindow") {
+        renderNotes();
+    }
+
+
+    if (id === "terminalWindow") {
+
+        setTimeout(() => {
+
+            document
+                .getElementById("terminalInput")
+                .focus();
+
+        },100);
+
+    }
+
+}
+
+
+function closeWindow(id) {
+
+    document
+        .getElementById(id)
+        .style.display =
+        "none";
+
+}
+
+
+function minimizeWindow(id) {
+
+    document
+        .getElementById(id)
+        .style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   DRAG WINDOWS
+========================================================= */
+
+function startDrag(event,id) {
+
+    if (
+        event.target.closest("button")
+    ) {
+        return;
+    }
+
+
+    const windowElement =
+        document.getElementById(id);
+
+
+    windowElement.style.zIndex =
+        ++zIndex;
+
+
+    const startX = event.clientX;
+
+    const startY = event.clientY;
+
+
+    const originalX =
+        windowElement.offsetLeft;
+
+    const originalY =
+        windowElement.offsetTop;
+
+
+    function move(event) {
+
+        windowElement.style.left =
+            originalX +
+            event.clientX -
+            startX +
+            "px";
+
+
+        windowElement.style.top =
+            originalY +
+            event.clientY -
+            startY +
+            "px";
+
+    }
+
+
+    function stop() {
+
+        document.removeEventListener(
+            "mousemove",
+            move
+        );
+
+        document.removeEventListener(
+            "mouseup",
+            stop
+        );
+
+    }
+
+
+    document.addEventListener(
+        "mousemove",
+        move
+    );
+
+
+    document.addEventListener(
+        "mouseup",
+        stop
+    );
+
+}
+
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+function updateClock() {
+
+    document
+        .getElementById("clock")
+        .textContent =
+        new Date().toLocaleString();
+
+}
+
+
+setInterval(
+    updateClock,
+    1000
+);
+
+updateClock();
+
+
+/* =========================================================
+   TERMINAL
+========================================================= */
+
+function terminalKey(event) {
+
+    if (event.key === "Enter") {
+
+        runTerminalCommand();
+
+    }
+
+}
+
+
+function runTerminalCommand() {
+
+    const input =
+        document
+        .getElementById("terminalInput");
+
+
+    const output =
+        document
+        .getElementById("terminalOutput");
+
+
+    const command =
+        input.value.trim();
+
+
+    input.value = "";
+
+
+    if (!command) {
+        return;
+    }
+
+
+    output.textContent +=
+        "\n> " + command + "\n";
+
+
+    const cmd =
+        command.toLowerCase();
+
+
+    if (cmd === "help") {
+
+        output.textContent +=
+`Commands:
+
+help
+clear
+files
+date
+version
+about
+`;
+
+    }
+
+
+    else if (cmd === "clear") {
+
+        output.textContent = "";
+
+    }
+
+
+    else if (cmd === "files") {
+
+        output.textContent +=
+            "Home contains:\n";
+
+
+        fileSystem.children.forEach(
+            item => {
+
+                output.textContent +=
+                    "• " +
+                    item.name +
+                    "\n";
+
+            }
+        );
+
+    }
+
+
+    else if (cmd === "date") {
+
+        output.textContent +=
+            new Date().toString() +
+            "\n";
+
+    }
+
+
+    else if (cmd === "version") {
+
+        output.textContent +=
+            "OMNIS OS V11\n";
+
+    }
+
+
+    else if (cmd === "about") {
+
+        output.textContent +=
+            "OMNIS is a browser-based operating system simulation.\n";
+
+    }
+
+
+    else {
+
+        output.textContent +=
+            "Command not found. Type help.\n";
+
+    }
+
+
+    output.scrollTop =
+        output.scrollHeight;
+
+}
+
+
+/* =========================================================
+   CALCULATOR
+========================================================= */
+
+function calculate() {
+
+    const input =
+        document
+        .getElementById("calculatorInput")
+        .value;
+
+
+    const result =
+        document
+        .getElementById("calculatorResult");
+
+
+    try {
+
+        /*
+           This calculator only accepts
+           mathematical expressions.
+        */
+
+        if (
+            !/^[0-9+\-*/().%\s]+$/.test(input)
+        ) {
+
+            throw new Error();
+
+        }
+
+
+        const answer =
+            Function(
+                '"use strict"; return (' +
+                input +
+                ')'
+            )();
+
+
+        result.textContent =
+            "= " + answer;
+
+    }
+
+    catch {
+
+        result.textContent =
+            "Invalid expression.";
+
+    }
+
+}
+
+
+/* =========================================================
+   NOTES
+========================================================= */
+
+const NOTES_KEY =
+    "OMNIS_OS_V11_NOTES";
+
+
+let notes =
+    JSON.parse(
+        localStorage.getItem(NOTES_KEY) || "[]"
+    );
+
+
+function saveNotes() {
+
+    localStorage.setItem(
+        NOTES_KEY,
+        JSON.stringify(notes)
+    );
+
+}
+
+
+function renderNotes() {
+
+    const list =
+        document.getElementById(
+            "notesList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    if (notes.length === 0) {
+
+        list.innerHTML =
+            "<p class='status'>No notes yet. Click ＋ to create one.</p>";
+
+        return;
+
+    }
+
+
+    notes.forEach(
+        (note,index) => {
+
+            const div =
+                document.createElement("div");
+
+
+            div.className =
+                "note";
+
+
+            div.innerHTML = `
+
+                <strong>
+                    ${escapeHTML(note.title)}
+                </strong>
+
+                <br>
+
+                <small>
+                    ${escapeHTML(
+                        note.body.substring(0,120)
+                    )}
+                </small>
+
+            `;
+
+
+            div.ondblclick =
+                function() {
+
+                    const newBody =
+                        prompt(
+                            "Edit note:",
+                            note.body
+                        );
+
+
+                    if (
+                        newBody !== null
+                    ) {
+
+                        note.body =
+                            newBody;
+
+                        saveNotes();
+
+                        renderNotes();
+
+                    }
+
+                };
+
+
+            list.appendChild(div);
+
+        }
+    );
+
+}
+
+
+function createNote() {
+
+    const title =
+        prompt(
+            "Note title:",
+            "New Note"
+        );
+
+
+    if (!title) {
+        return;
+    }
+
+
+    const body =
+        prompt(
+            "Note text:",
+            ""
+        );
+
+
+    notes.push({
+
+        title: title,
+
+        body: body || ""
+
+    });
+
+
+    saveNotes();
+
+    renderNotes();
+
+}
+
+
+/* =========================================================
+   BOOT SCREEN
+========================================================= */
+
+window.addEventListener(
+    "load",
+    function() {
+
+        setTimeout(
+            function() {
+
+                document
+                    .getElementById("boot")
+                    .style.display =
+                    "none";
+
+            },
+            2200
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
